@@ -8,6 +8,7 @@ import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Region;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
@@ -102,7 +103,9 @@ public class CropOverlayView extends View implements PhotoViewAttacher.IGetImage
         clipPath.addRoundRect(rectF, radius, radius, Path.Direction.CW);
         canvas.clipPath(clipPath, Region.Op.DIFFERENCE);
         canvas.drawARGB(204, 41, 48, 63);
-        canvas.restore();
+        //Don't use restore if the build sdk is marshmallow or above.
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M)
+            canvas.restore();
         canvas.drawRoundRect(rectF, radius, radius, mBorderPaint);
 
         drawRuleOfThirdsGuidelines(canvas);
